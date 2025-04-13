@@ -1,9 +1,10 @@
+#pragma once
+
 #include <cstdint>
 #include <vector>
 
 struct UnionFindTree {
-    std::vector<int32_t> data;
-    UnionFindTree(int32_t n) : data(n, -1) {}
+    UnionFindTree(const int32_t n) : data(n, -1) {}
 
     int32_t find(const int32_t x) {
         if (data[x] < 0) return x;
@@ -18,4 +19,8 @@ struct UnionFindTree {
         data[y] = x;
         return true;
     }
+    int32_t size(const int32_t x) { return -data[find(x)]; }
+
+   private:
+    std::vector<int32_t> data;
 };
