@@ -28,6 +28,15 @@ std::ostream& operator<<(std::ostream& ost, const std::vector<T>& v) {
 
 inline int32_t parity(uint64_t x) { return __builtin_parity(x); }
 
+int Yes() {
+    std::cout << "Yes" << std::endl;
+    return 0;
+}
+int No() {
+    std::cout << "No" << std::endl;
+    return 0;
+}
+
 void print() {}
 
 template <class Head, class... Tail>
