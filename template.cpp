@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 
 template <typename A, typename B>
-inline void chmin(A& a, B b) {
+inline void chmin(A& a, const B b) {
     if (a > b) a = b;
 }
 template <typename A, typename B>
-inline void chmax(A& a, B b) {
+inline void chmax(A& a, const B b) {
     if (a < b) a = b;
 }
 
@@ -50,6 +50,8 @@ using std::priority_queue, std::set, std::multiset, std::map;
 using std::views::iota;
 
 signed main() {
+    std::ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     // torichan
 
     return 0;
