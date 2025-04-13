@@ -39,14 +39,22 @@ using vint = std::vector<int>;
 using pint = std::pair<int, int>;
 using vpint = std::vector<pint>;
 
+using std::cin, std::cout, std::cerr, std::endl;
+
 using std::abs, std::pow, std::sqrt;
-using std::array, std::vector, std::string, std::queue, std::deque;
+
+using std::min, std::max, std::swap;
+
 using std::bit_ceil, std::bit_floor, std::bit_width, std::countr_zero,
     std::countr_one, std::popcount;
-using std::cin, std::cout, std::cerr, std::endl;
-using std::min, std::max, std::swap;
-using std::pair, std::tuple, std::bitset;
-using std::priority_queue, std::set, std::multiset, std::map;
+
+using std::pair, std::tuple;
+
+using std::array, std::bitset, std::string, std::vector, std::deque;
+using std::queue, std::priority_queue;
+using std::set, std::multiset, std::map;
+
+using std::ranges::sort, std::ranges::reverse;
 using std::views::iota;
 
 signed main() {
