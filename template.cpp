@@ -26,10 +26,6 @@ std::ostream& operator<<(std::ostream& ost, const std::vector<T>& v) {
     return ost;
 }
 
-inline int32_t topbit(uint64_t x) { return x ? 63 - __builtin_clzll(x) : -1; }
-
-inline int32_t popcount(uint64_t x) { return __builtin_popcountll(x); }
-
 inline int32_t parity(uint64_t x) { return __builtin_parity(x); }
 
 #define int long long
@@ -42,12 +38,14 @@ inline int32_t parity(uint64_t x) { return __builtin_parity(x); }
 using vint = std::vector<int>;
 using pint = std::pair<int, int>;
 using vpint = std::vector<pint>;
+
 using std::abs, std::pow, std::sqrt;
 using std::array, std::vector, std::string, std::queue, std::deque;
+using std::bit_ceil, std::bit_floor, std::bit_width, std::countr_zero,
+    std::countr_one, std::popcount;
 using std::cin, std::cout, std::cerr, std::endl;
 using std::min, std::max, std::swap;
 using std::pair, std::tuple, std::bitset;
-using std::popcount;
 using std::priority_queue, std::set, std::multiset, std::map;
 using std::views::iota;
 
