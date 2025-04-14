@@ -101,6 +101,8 @@ using std::set, std::multiset, std::map;
 using std::ranges::sort, std::ranges::reverse;
 using std::views::iota;
 
+#define rep(i, n) for (int i = 0; i < (n); i++)
+
 signed main() {
     std::ios::sync_with_stdio(false);
     cin.tie(nullptr);
