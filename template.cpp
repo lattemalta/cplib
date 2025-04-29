@@ -103,6 +103,8 @@ using std::views::iota;
 
 #define rep(i, n) for (int i = 0; i < (n); i++)
 
+constexpr int INF = 1ll << 61;
+
 signed main() {
     std::ios::sync_with_stdio(false);
     cin.tie(nullptr);
