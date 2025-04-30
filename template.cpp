@@ -57,20 +57,17 @@ void println(Args&&... args) {
     SHOW_IMPL(__VA_ARGS__, SHOW6, SHOW5, SHOW4, SHOW3, SHOW2, \
               SHOW1)(__VA_ARGS__)
 #define SHOW_IMPL(_1, _2, _3, _4, _5, _6, NAME, ...) NAME
-#define SHOW1(x) println(#x, "=", (x)), flush()
-#define SHOW2(x, y) println(#x, "=", (x), #y, "=", (y)), flush()
-#define SHOW3(x, y, z) \
-    println(#x, "=", (x), #y, "=", (y), #z, "=", (z)), flush()
+#define SHOW1(x) println(#x, "=", (x))
+#define SHOW2(x, y) println(#x, "=", (x), #y, "=", (y))
+#define SHOW3(x, y, z) println(#x, "=", (x), #y, "=", (y), #z, "=", (z))
 #define SHOW4(x, y, z, w) \
-    println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w)), flush()
+    println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w))
 #define SHOW5(x, y, z, w, v)                                                 \
     println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-            (v)),                                                            \
-        flush()
+            (v))
 #define SHOW6(x, y, z, w, v, u)                                              \
     println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
-            (v), #u, "=", (u)),                                              \
-        flush()
+            (v), #u, "=", (u))
 
 #define int long long
 
