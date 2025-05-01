@@ -69,34 +69,15 @@ void println(Args&&... args) {
     println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
             (v), #u, "=", (u))
 
-#define int long long
-
 #define eb emplace_back
 #define all(v) (v).begin(), (v).end()
 #define fi first
 #define se second
-
+#define int long long
 using vint = std::vector<int>;
 using pint = std::pair<int, int>;
 using vpint = std::vector<pint>;
-
-using std::cin, std::cout, std::cerr, std::endl;
-
-using std::abs, std::pow, std::sqrt;
-
-using std::min, std::max, std::swap;
-
-using std::bit_ceil, std::bit_floor, std::bit_width, std::countr_zero,
-    std::countr_one, std::popcount;
-
-using std::pair, std::tuple;
-
-using std::array, std::bitset, std::string, std::vector, std::deque;
-using std::set, std::multiset, std::map;
-using std::stack, std::queue, std::priority_queue;
-
-using std::ranges::sort, std::ranges::reverse;
-using std::views::iota;
+using namespace std;
 
 #define rep(i, n) for (int i = 0; i < (n); i++)
 
