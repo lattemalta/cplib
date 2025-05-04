@@ -11,16 +11,42 @@ inline void chmax(A& a, const B b) {
 
 template <class A, class B>
 std::ostream& operator<<(std::ostream& ost, const std::pair<A, B>& p) {
-    ost << "{" << p.first << "," << p.second << "}";
+    ost << "(" << p.first << ", " << p.second << ")";
     return ost;
 }
 
 template <class T>
 std::ostream& operator<<(std::ostream& ost, const std::vector<T>& v) {
-    ost << "{";
+    ost << "[";
     for (int i = 0; i < v.size(); i++) {
-        if (i) ost << ",";
+        if (i) ost << ", ";
         ost << v[i];
+    }
+    ost << "]";
+    return ost;
+}
+
+template <class T>
+std::ostream& operator<<(std::ostream& ost, const std::set<T>& s) {
+    ost << "{";
+    bool first = true;
+    for (const auto& v : s) {
+        if (!first) ost << ", ";
+        ost << v;
+        first = false;
+    }
+    ost << "}";
+    return ost;
+}
+
+template <class T, class U>
+std::ostream& operator<<(std::ostream& ost, const std::map<T, U>& m) {
+    ost << "{";
+    bool first = true;
+    for (const auto& [k, v] : m) {
+        if (!first) ost << ", ";
+        ost << k << ":" << v;
+        first = false;
     }
     ost << "}";
     return ost;
