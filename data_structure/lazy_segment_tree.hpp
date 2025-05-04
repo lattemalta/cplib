@@ -88,7 +88,7 @@ struct LazySegmentTree {
         for (int32_t i = sz - 1; i > 0; --i) update(i);
     }
 
-    void set(const int32_t k, const S &x) {
+    void set(int32_t k, const S &x) {
         k += sz;
         for (int32_t i = height; i > 0; --i) propagate(k >> i);
         data[k] = x;
