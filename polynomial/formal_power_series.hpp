@@ -199,6 +199,36 @@ struct Polynomial : private std::vector<mint_t> {
         }
         return f0.pre(n);
     }
+    Polynomial pow(const int64_t M,
+                   const std::optional<std::size_t> n_ = std::nullopt) {
+        const auto n = n_.value_or(this->size());
+
+        if (M == 0) {
+            Polynomial res(n);
+            res[0] = 1;
+            return res;
+        }
+
+        int32_t nz = 0;
+        while (nz < this->size() && (*this)[nz] == 0) ++nz;
+        if (nz == this->size()) return Polynomial(n);
+        if (nz && (n + nz - 1) / nz <= M) {
+            return Polynomial(n);
+        }
+
+        Polynomial res((*this).begin() + nz,
+                       (*this).begin() + std::min(n, this->size()));
+        auto c = res[0];
+        res *= c.inv();
+        res = res.log(n);
+        res *= M;
+        res = res.exp(n);
+        res *= c.pow(M);
+
+        Polynomial res2(n);
+        for (auto i = 0; i < n - nz * M; i++) res2[nz * M + i] = res[i];
+        return res2;
+    }
 
     // Polynomial normalize() const {
     //     auto res = v;
