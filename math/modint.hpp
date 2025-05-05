@@ -55,4 +55,4 @@ std::ostream& operator<<(std::ostream& out, const ModInt<mod>& a) {
     return (out << a.a);
 }
 
-using modint_998 = ModInt<998244353>;
+using modint998244353 = ModInt<998244353>;
