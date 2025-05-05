@@ -1,7 +1,11 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
+#include <optional>
 #include <vector>
+
+#include "convolution/number_theoretic_transform.hpp"
 
 // todo: calc root from mint_t::get_mod()
 template <class mint_t>
