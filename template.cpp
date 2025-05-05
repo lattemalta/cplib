@@ -1,14 +1,5 @@
 #include <bits/stdc++.h>
 
-template <typename A, typename B>
-inline void chmin(A& a, const B b) {
-    if (a > b) a = b;
-}
-template <typename A, typename B>
-inline void chmax(A& a, const B b) {
-    if (a < b) a = b;
-}
-
 template <class A, class B>
 std::ostream& operator<<(std::ostream& ost, const std::pair<A, B>& p) {
     ost << "(" << p.first << ", " << p.second << ")";
@@ -52,17 +43,6 @@ std::ostream& operator<<(std::ostream& ost, const std::map<T, U>& m) {
     return ost;
 }
 
-inline int32_t parity(uint64_t x) { return __builtin_parity(x); }
-
-int Yes() {
-    std::cout << "Yes" << std::endl;
-    return 0;
-}
-int No() {
-    std::cout << "No" << std::endl;
-    return 0;
-}
-
 void print() {}
 
 template <class Head, class... Tail>
@@ -95,6 +75,15 @@ void println(Args&&... args) {
     println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
             (v), #u, "=", (u))
 
+int Yes() {
+    println("Yes");
+    return 0;
+}
+int No() {
+    println("No");
+    return 0;
+}
+
 #define FOR1(a) for (int64_t _ = 0; _ < int64_t(a); ++_)
 #define FOR2(i, a) for (int64_t i = 0; i < int64_t(a); ++i)
 #define FOR3(i, a, b) for (int64_t i = a; i < int64_t(b); ++i)
@@ -106,6 +95,19 @@ void println(Args&&... args) {
 #define overload3(a, b, c, d, ...) d
 #define rep(...) overload4(__VA_ARGS__, FOR4, FOR3, FOR2, FOR1)(__VA_ARGS__)
 #define rep_r(...) overload3(__VA_ARGS__, FOR3_R, FOR2_R, FOR1_R)(__VA_ARGS__)
+
+template <typename A, typename B>
+inline void chmin(A& a, const B b) {
+    if (a > b) a = b;
+}
+template <typename A, typename B>
+inline void chmax(A& a, const B b) {
+    if (a < b) a = b;
+}
+
+inline int32_t popcount(int64_t x) {
+    return popcount(static_cast<uint64_t>(x));
+}
 
 #define eb emplace_back
 #define all(v) (v).begin(), (v).end()
