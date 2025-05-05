@@ -44,6 +44,7 @@ struct ModInt {
     }
 
     ModInt inv() const { return pow(mod - 2); }
+    static constexpr uint32_t get_mod() { return mod; }
 };
 
 template <uint32_t mod>
