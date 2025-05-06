@@ -105,8 +105,8 @@ inline void chmax(A& a, const B b) {
     if (a < b) a = b;
 }
 
-inline int32_t popcount(int64_t x) {
-    return popcount(static_cast<uint64_t>(x));
+inline int32_t __popcount(int64_t x) {
+    return std::popcount(static_cast<uint64_t>(x));
 }
 
 #define eb emplace_back
