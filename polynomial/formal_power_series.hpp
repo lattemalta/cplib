@@ -233,10 +233,15 @@ struct Polynomial : private std::vector<mint_t> {
         for (auto i = 0; i < n - nz * M; i++) res2[nz * M + i] = res[i];
         return res2;
     }
-
-    // Polynomial normalize() const {
-    //     auto res = v;
-    //     while (res.size() && res.back() == 0) res.pop_back();
-    //     return res;
-    // }
 };
+
+template <class T>
+std::ostream& operator<<(std::ostream& ost, const Polynomial<T>& v) {
+    ost << "[";
+    for (int32_t i = 0; i < v.size(); i++) {
+        if (i) ost << ", ";
+        ost << v[i];
+    }
+    ost << "]";
+    return ost;
+}
