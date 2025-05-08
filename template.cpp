@@ -150,10 +150,13 @@ using vpint = std::vector<pint>;
 using namespace std;
 
 constexpr int INF = 1ll << 61;
+const vector<int64_t> dx{0, 1, 0, -1};
+const vector<int64_t> dy{-1, 0, 1, 0};
 
 signed main() {
     std::ios::sync_with_stdio(false);
     cin.tie(nullptr);
+    std::cout << std::fixed << std::setprecision(10);
     // torichan
 
     return 0;
