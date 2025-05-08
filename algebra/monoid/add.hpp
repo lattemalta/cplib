@@ -1,3 +1,5 @@
+#pragma once
+
 template <typename X>
 struct Monoid_Add {
     using value_type = X;
@@ -8,4 +10,5 @@ struct Monoid_Add {
     }
     static constexpr X e() noexcept { return X(0); }
     static constexpr bool commutative = true;
+    static constexpr bool invertible = true;
 };

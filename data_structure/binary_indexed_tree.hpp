@@ -1,24 +1,35 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 #include <vector>
 
-template <class T>
+template <class Monoid>
 struct BinaryIndexedTree {
-    std::vector<T> data;
+    using G = Monoid;
+    using E = typename G::value_type;
+    std::vector<E> data;
 
-    BinaryIndexedTree(int32_t sz) { data.assign(++sz, 0); }
+    BinaryIndexedTree(const int32_t sz) { data.assign(sz + 1, G::e()); }
 
-    T sum(int32_t k) const {
-        T ret = 0;
-        for (++k; k > 0; k -= k & -k) ret += data[k];
-        return (ret);
+    // [0, k)
+    E prefix_prod(int32_t k) const {
+        E res = G::e();
+        for (; k > 0; k -= k & -k) {
+            res = G::op(data[k], res);
+        }
+        return res;
     }
-    T sum(const int32_t l, const int32_t r) const {
-        return sum(r) - sum(l - 1);
+
+    E prod(int32_t l, int32_t r) const {
+        static_assert(G::invertible);
+        return G::op(G::inv(prefix_prod(l)), prefix_prod(r));
     }
 
-    void add(int32_t k, const T x) {
-        for (++k; k < data.size(); k += k & -k) data[k] += x;
+    void multiply(int32_t k, const E& x) {
+        static_assert(G::commutative);
+        for (k++; k < data.size(); k += k & -k) {
+            data[k] = G::op(data[k], x);
+        }
     }
 };
