@@ -6,6 +6,24 @@ std::ostream& operator<<(std::ostream& ost, const std::pair<A, B>& p) {
     return ost;
 }
 
+template <typename... Args>
+std::ostream& operator<<(std::ostream& os, const std::tuple<Args...>& t);
+
+namespace detail {
+template <typename Tuple, std::size_t... Is>
+void print_tuple(std::ostream& os, const Tuple& t, std::index_sequence<Is...>) {
+    os << "(";
+    ((os << (Is == 0 ? "" : ", ") << std::get<Is>(t)), ...);
+    os << ")";
+}
+}  // namespace detail
+
+template <typename... Args>
+std::ostream& operator<<(std::ostream& os, const std::tuple<Args...>& t) {
+    detail::print_tuple(os, t, std::index_sequence_for<Args...>{});
+    return os;
+}
+
 template <class T>
 std::ostream& operator<<(std::ostream& ost, const std::vector<T>& v) {
     ost << "[";
