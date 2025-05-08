@@ -37,19 +37,6 @@ struct SegmentTree {
 
     E operator[](const int32_t &k) const { return seg[k + sz]; }
 
-    template <typename C>
-    int32_t find_subtree(int32_t a, const C &check, E &M, bool type) {
-        while (a < sz) {
-            E nxt = type ? G::op(seg[2 * a + type], M)
-                         : G::op(M, seg[2 * a + type]);
-            if (check(nxt))
-                a = 2 * a + type;
-            else
-                M = nxt, a = 2 * a + 1 - type;
-        }
-        return a - sz;
-    }
-
     /**
      * @brief
      * find_first(a, check) returns the first index i such that
@@ -67,7 +54,7 @@ struct SegmentTree {
         int32_t b = sz;
         for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
             if (a & 1) {
-                Monoid nxt = f(L, seg[a]);
+                E nxt = G::op(L, seg[a]);
                 if (check(nxt)) return find_subtree(a, check, L, false);
                 L = nxt;
                 ++a;
@@ -92,11 +79,25 @@ struct SegmentTree {
         int32_t a = sz;
         for (b += sz; a < b; a >>= 1, b >>= 1) {
             if (b & 1) {
-                E nxt = f(seg[--b], R);
+                E nxt = G::op(seg[--b], R);
                 if (check(nxt)) return find_subtree(b, check, R, true);
                 R = nxt;
             }
         }
         return -1;
+    }
+
+   private:
+    template <typename C>
+    int32_t find_subtree(int32_t a, const C &check, E &M, bool type) {
+        while (a < sz) {
+            E nxt = type ? G::op(seg[2 * a + type], M)
+                         : G::op(M, seg[2 * a + type]);
+            if (check(nxt))
+                a = 2 * a + type;
+            else
+                M = nxt, a = 2 * a + 1 - type;
+        }
+        return a - sz;
     }
 };
