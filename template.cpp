@@ -43,22 +43,23 @@ std::ostream& operator<<(std::ostream& ost, const std::map<T, U>& m) {
     return ost;
 }
 
-void print() {}
+int print() { return 0; }
 
 template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
+int print(Head&& head, Tail&&... tail) {
     std::cout << head;
     if (sizeof...(Tail)) {
         std::cout << " ";
     }
-    print(std::forward<Tail>(tail)...);
+    return print(std::forward<Tail>(tail)...);
 }
 
 template <class... Args>
-void println(Args&&... args) {
-    print(args..., '\n');
+int println(Args&&... args) {
+    return print(std::forward<Args>(args)..., '\n');
 }
 
+#ifndef ONLINE_JUDGE
 #define SHOW(...)                                             \
     SHOW_IMPL(__VA_ARGS__, SHOW6, SHOW5, SHOW4, SHOW3, SHOW2, \
               SHOW1)(__VA_ARGS__)
@@ -74,6 +75,9 @@ void println(Args&&... args) {
 #define SHOW6(x, y, z, w, v, u)                                              \
     println(#x, "=", (x), #y, "=", (y), #z, "=", (z), #w, "=", (w), #v, "=", \
             (v), #u, "=", (u))
+#else
+#define SHOW(...) 0x0119
+#endif
 
 int Yes() {
     println("Yes");
@@ -82,6 +86,12 @@ int Yes() {
 int No() {
     println("No");
     return 0;
+}
+int YesNo(bool cond) {
+    if (cond)
+        return Yes();
+    else
+        return No();
 }
 
 #define FOR1(a) for (int64_t _ = 0; _ < int64_t(a); ++_)
