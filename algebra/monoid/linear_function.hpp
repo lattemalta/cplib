@@ -3,7 +3,7 @@
 #include <utility>
 
 template <typename T>
-struct LinearFunction {
+struct LinearFunctionMonoid {
     using value_type = std::pair<T, T>;
 
     // g(f(x))
