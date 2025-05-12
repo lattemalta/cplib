@@ -4,7 +4,7 @@
 #include <limits>
 
 template <typename X>
-struct Monoid_Max {
+struct MaxMonoid {
     using value_type = X;
     static constexpr X op(const X& x, const X& y) noexcept {
         return std::max(x, y);
