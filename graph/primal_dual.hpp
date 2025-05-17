@@ -23,7 +23,7 @@ struct PrimalDual {
     std::vector<int32_t> prevv, preve;
     static constexpr cost_t INF = std::numeric_limits<cost_t>::max();
 
-    PrimalDual(const int32_t V) : graph(V + 2) {}
+    PrimalDual(const int32_t V) : graph(V + 2), b(V) {}
 
     void add_edge(const int32_t from, const int32_t to, const flow_t cap,
                   const cost_t cost) {
@@ -43,7 +43,7 @@ struct PrimalDual {
         b[v] -= cap;
     }
 
-    cost_t min_cost_flow_impl(const int32_t s, const int32_t t) {
+    cost_t min_cost_flow_impl(const int32_t s, const int32_t t, flow_t f) {
         const int32_t V = static_cast<int32_t>(graph.size());
         cost_t ret = 0;
         std::priority_queue<std::pair<cost_t, int32_t>,
@@ -105,18 +105,18 @@ struct PrimalDual {
     cost_t min_cost_flow() {
         const int32_t V = static_cast<int32_t>(graph.size());
         const int32_t src = V - 2, sink = V - 1;
-        flot_t positive = 0, negative = 0;
-        for (int32_t i = 0; i < V; i++) {
+        flow_t positive = 0, negative = 0;
+        for (int32_t i = 0; i < V - 2; i++) {
             if (b[i] > 0) {
                 add_edge(src, i, b[i], 0);
                 positive += b[i];
-            } else if (b[v] < 0) {
+            } else if (b[i] < 0) {
                 add_edge(i, sink, -b[i], 0);
                 negative += -b[i];
             }
         }
         if (positive != negative) return -1;
-        cost_t ret = min_cost_flow_impl(src, sink);
+        cost_t ret = min_cost_flow_impl(src, sink, positive);
         return ret;
     }
 
