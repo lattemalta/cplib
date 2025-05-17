@@ -19,10 +19,11 @@ struct PrimalDual {
 
     std::vector<std::vector<edge>> graph;
     std::vector<cost_t> potential, min_cost;
+    std::vector<flow_t> b;
     std::vector<int32_t> prevv, preve;
     static constexpr cost_t INF = std::numeric_limits<cost_t>::max();
 
-    PrimalDual(const int32_t V) : graph(V) {}
+    PrimalDual(const int32_t V) : graph(V + 2) {}
 
     void add_edge(const int32_t from, const int32_t to, const flow_t cap,
                   const cost_t cost) {
@@ -33,14 +34,34 @@ struct PrimalDual {
                  true});
     }
 
-    cost_t min_cost_flow(const int32_t s, const int32_t t, flow_t f) {
+    void add_supply(const int32_t v, const flow_t cap) {
+        assert(cap >= 0);
+        b[v] += cap;
+    }
+    void add_demand(const int32_t v, const flow_t cap) {
+        assert(cap >= 0);
+        b[v] -= cap;
+    }
+
+    cost_t min_cost_flow_impl(const int32_t s, const int32_t t) {
         const int32_t V = static_cast<int32_t>(graph.size());
         cost_t ret = 0;
         std::priority_queue<std::pair<cost_t, int32_t>,
                             std::vector<std::pair<cost_t, int32_t>>,
                             std::greater<std::pair<cost_t, int32_t>>>
             que;
-        potential.assign(V, 0);
+        potential.assign(V, INF);
+        potential[s] = 0;
+        for (int32_t i = 0; i < V - 1; i++) {
+            for (int32_t v = 0; v < V; v++) {
+                if (potential[v] == INF) continue;
+                for (auto &e : graph[v]) {
+                    if (e.cap == 0) continue;
+                    potential[e.to] =
+                        std::min(potential[e.to], potential[v] + e.cost);
+                }
+            }
+        }
         preve.assign(V, -1);
         prevv.assign(V, -1);
 
@@ -78,6 +99,24 @@ struct PrimalDual {
                 graph[v][e.rev].cap += addflow;
             }
         }
+        return ret;
+    }
+
+    cost_t min_cost_flow() {
+        const int32_t V = static_cast<int32_t>(graph.size());
+        const int32_t src = V - 2, sink = V - 1;
+        flot_t positive = 0, negative = 0;
+        for (int32_t i = 0; i < V; i++) {
+            if (b[i] > 0) {
+                add_edge(src, i, b[i], 0);
+                positive += b[i];
+            } else if (b[v] < 0) {
+                add_edge(i, sink, -b[i], 0);
+                negative += -b[i];
+            }
+        }
+        if (positive != negative) return -1;
+        cost_t ret = min_cost_flow_impl(src, sink);
         return ret;
     }
 
