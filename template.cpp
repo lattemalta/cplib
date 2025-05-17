@@ -74,7 +74,9 @@ int print(Head&& head, Tail&&... tail) {
 
 template <class... Args>
 int println(Args&&... args) {
-    return print(std::forward<Args>(args)..., '\n');
+    print(std::forward<Args>(args)...);
+    std::cout << "\n";
+    return 0;
 }
 
 #ifndef ONLINE_JUDGE
