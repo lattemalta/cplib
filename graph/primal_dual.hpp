@@ -15,8 +15,10 @@ struct PrimalDual {
         bool feasible;
         flow_t cost;
         std::vector<flow_t> dual;
+        std::vector<std::pair<flow_t, flow_t>> slope;
     };
-    PrimalDual(const int32_t V) : graph(V + 2), b(V) {}
+    PrimalDual(const int32_t V)
+        : graph(V + 2), b(V), slope{{flow_t(0), flow_t(0)}} {}
 
     void add_edge(const int32_t from, const int32_t to, const flow_t cap,
                   const flow_t cost) {
@@ -51,12 +53,13 @@ struct PrimalDual {
         }
         if (positive != negative) return {};
         flow_t ret = min_cost_flow_impl(src, sink, positive);
-        if (ret == INF) return {};
         Result res{};
-        res.feasible = true;
+        res.feasible = (ret != INF);
         res.cost = ret;
         bellman_ford();
         res.dual = potential;
+        res.slope = slope;
+
         return res;
     }
 
@@ -84,6 +87,7 @@ struct PrimalDual {
     std::vector<flow_t> potential, min_cost;
     std::vector<flow_t> b;
     std::vector<int32_t> prevv, preve;
+    std::vector<pair<flow_t, flow_t>> slope;
 
     void dijkstra(const int32_t s) {
         std::priority_queue<std::pair<flow_t, int32_t>,
@@ -145,6 +149,10 @@ struct PrimalDual {
             }
             f -= addflow;
             ret += addflow * potential[t];
+            assert(slope.size());
+            slope.emplace_back(slope.back().first + addflow,
+                               slope.back().second + addflow * potential[t]);
+
             for (int32_t v = t; v != s; v = prevv[v]) {
                 edge &e = graph[prevv[v]][preve[v]];
                 e.cap -= addflow;
