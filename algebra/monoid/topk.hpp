@@ -5,7 +5,7 @@
 #include <vector>
 
 template <typename T, uint64_t K>
-struct TopK {
+struct TopKMonoid {
     using value_type = vector<pair<T, int64_t>>;
     static constexpr value_type op(const value_type &a, const value_type &b) {
         std::vector<std::pair<T, int64_t>> c;
