@@ -308,6 +308,59 @@ struct Polynomial : private std::vector<mint_t> {
         }
         return res;
     }
+    Polynomial pow_sparse(const int64_t M,
+                          const std::optional<std::size_t> n_ = std::nullopt) {
+        const auto n = n_.value_or(this->size());
+        assert(n > 0);
+
+        if (n == 1) return Polynomial{this->coef(0).pow(M)};
+
+        if (M == 0) {
+            Polynomial res(n);
+            res[0] = 1;
+            return res;
+        }
+
+        int32_t nz = 0;
+        while (nz < this->size() && (*this)[nz] == 0) ++nz;
+        if (nz == this->size()) return Polynomial(n);
+        if (nz && (n + nz - 1) / nz <= M) {
+            return Polynomial(n);
+        }
+
+        Polynomial poly(n);
+        for (int32_t i = 0; i + nz < std::min(n, this->size()); i++)
+            poly[i] = this->coef(i + nz);
+
+        auto c = poly[0];
+        poly *= c.inv();
+
+        std::vector<int32_t> non_zero_pos;
+        for (int32_t i = 1; i < poly.size(); i++)
+            if (poly[i] != 0) non_zero_pos.emplace_back(i);
+
+        std::vector<mint_t> inv_list(n);
+        inv_list[1] = 1;
+        constexpr auto mod = mint_t::get_mod();
+        for (int32_t i = 2; i < n; i++)
+            inv_list[i] = -inv_list[mod % i] * (mod / i);
+
+        Polynomial res(n);
+        res[0] = 1;
+        for (int32_t i = 1; i < n; i++) {
+            for (auto j : non_zero_pos) {
+                if (j <= i)
+                    res[i] += poly[j] * res[i - j] * (mint_t(M) * j - (i - j));
+            }
+            res[i] *= inv_list[i];
+        }
+
+        res *= c.pow(M);
+
+        Polynomial res2(n);
+        for (auto i = 0; i < n - nz * M; i++) res2[nz * M + i] = res[i];
+        return res2;
+    }
 };
 
 template <class T>
