@@ -247,7 +247,7 @@ struct Polynomial : private std::vector<mint_t> {
         Polynomial res(n);
         res[0] = inv_val;
 
-        std::vector<std::size_t> non_zero_pos;
+        std::vector<int32_t> non_zero_pos;
         for (int32_t i = 1; i < this->size(); i++)
             if (this->coef(i) != 0) non_zero_pos.emplace_back(i);
 
@@ -258,6 +258,26 @@ struct Polynomial : private std::vector<mint_t> {
             res[i] *= -inv_val;
         }
         return res;
+    }
+    Polynomial log_sparse(const std::optional<std::size_t> n_ = std::nullopt) {
+        const auto n = n_.value_or(this->size());
+        assert(this->coef(0) == 1);
+
+        if (n == 0) return Polynomial();
+
+        auto inv_poly = this->inv(n);
+        std::vector<int32_t> non_zero_pos;
+        for (int32_t i = 1; i < this->size(); i++)
+            if (this->coef(i) != 0) non_zero_pos.emplace_back(i);
+
+        Polynomial res(n);
+        for (auto j : non_zero_pos) {
+            auto coef = this->coef(j) * j;
+            for (int32_t i = 0; i < this->size() && i + j - 1 < n; i++) {
+                res[i + j - 1] += coef * inv_poly[i];
+            }
+        }
+        return res.integral(n);
     }
 };
 
