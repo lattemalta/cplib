@@ -14,6 +14,8 @@ struct Polynomial : private std::vector<mint_t> {
     using std::vector<mint_t>::size;
     using std::vector<mint_t>::resize;
     using std::vector<mint_t>::operator[];
+    using std::vector<mint_t>::begin;
+    using std::vector<mint_t>::end;
 
     Polynomial& operator+=(const Polynomial& x) {
         if (this->size() < x.size()) this->resize(x.size());
@@ -232,6 +234,30 @@ struct Polynomial : private std::vector<mint_t> {
         Polynomial res2(n);
         for (auto i = 0; i < n - nz * M; i++) res2[nz * M + i] = res[i];
         return res2;
+    }
+    Polynomial inv_sparse(const std::optional<std::size_t> n_ = std::nullopt) {
+        const auto n = n_.value_or(this->size());
+        assert(this->coef(0) != 0);
+
+        if (n == 0) {
+            return Polynomial();
+        }
+
+        const auto inv_val = this->coef(0).inv();
+        Polynomial res(n);
+        res[0] = inv_val;
+
+        std::vector<std::size_t> non_zero_pos;
+        for (int32_t i = 1; i < this->size(); i++)
+            if (this->coef(i) != 0) non_zero_pos.emplace_back(i);
+
+        for (int32_t i = 1; i < n; i++) {
+            for (auto j : non_zero_pos) {
+                if (j <= i) res[i] += this->coef(j) * res[i - j];
+            }
+            res[i] *= -inv_val;
+        }
+        return res;
     }
 };
 
