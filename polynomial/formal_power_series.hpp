@@ -237,11 +237,9 @@ struct Polynomial : private std::vector<mint_t> {
     }
     Polynomial inv_sparse(const std::optional<std::size_t> n_ = std::nullopt) {
         const auto n = n_.value_or(this->size());
-        assert(this->coef(0) != 0);
+        assert(n > 0);
 
-        if (n == 0) {
-            return Polynomial();
-        }
+        assert(this->coef(0) != 0);
 
         const auto inv_val = this->coef(0).inv();
         Polynomial res(n);
@@ -261,9 +259,9 @@ struct Polynomial : private std::vector<mint_t> {
     }
     Polynomial log_sparse(const std::optional<std::size_t> n_ = std::nullopt) {
         const auto n = n_.value_or(this->size());
-        assert(this->coef(0) == 1);
+        assert(n > 0);
 
-        if (n == 0) return Polynomial();
+        assert(this->coef(0) == 1);
 
         auto inv_poly = this->inv(n);
         std::vector<int32_t> non_zero_pos;
@@ -278,6 +276,37 @@ struct Polynomial : private std::vector<mint_t> {
             }
         }
         return res.integral(n);
+    }
+    Polynomial exp_sparse(const std::optional<std::size_t> n_ = std::nullopt) {
+        const auto n = n_.value_or(this->size());
+        assert(n > 0);
+
+        assert(this->coef(0) == 0);
+
+        if (n == 1) return Polynomial{1};
+
+        Polynomial res(n);
+        res[0] = 1;
+
+        std::vector<int32_t> non_zero_pos;
+        for (int32_t i = 1; i < this->size(); i++)
+            if (this->coef(i) != 0) non_zero_pos.emplace_back(i);
+
+        std::vector<mint_t> inv_list(n);
+        inv_list[1] = 1;
+        constexpr auto mod = mint_t::get_mod();
+        for (int32_t i = 2; i < n; i++)
+            inv_list[i] = -inv_list[mod % i] * (mod / i);
+
+        for (int32_t i = 1; i < n; i++) {
+            for (auto j : non_zero_pos) {
+                if (j <= i) {
+                    res[i] += res[i - j] * this->coef(j) * j;
+                }
+            }
+            res[i] *= inv_list[i];
+        }
+        return res;
     }
 };
 
